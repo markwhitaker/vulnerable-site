@@ -1,0 +1,37 @@
+@{
+    ViewData["Title"] = "XSS";
+}
+
+@model XssViewModel
+
+<h1>XSS vulnerable page</h1>
+
+<p>
+    This page is vulnerable to <a href="https://portswigger.net/web-security/cross-site-scripting">cross-site scripting (XSS)</a> attacks.
+</p>
+<p>
+    When you add a message in the box below, it&rsquo;s added to the bottom of the page as raw HTML.
+</p>
+<p>
+    See what happens if you add the message <code>&lt;script&gt;print()&lt;/script&gt;</code> to the page.
+</p>
+
+<h2>Add a message</h2>
+<div>
+    <form method="post" action="@Url.Action("Add")">
+        <input type="text" name="message"/>
+        <input type="submit" value="Submit"/>
+    </form>
+</div>
+
+<br/>
+
+<h2>Messages</h2>
+<div>
+    @{
+        foreach (var message in Model.Messages)
+        {
+            <div>@Html.Raw(message)</div>
+        }
+    }
+</div>

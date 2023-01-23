@@ -1,0 +1,22 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<section>
+    <h1>Mark&rsquo;s vulnerable website</h1>
+
+    <p>
+        This site was developed to test integration with <a href="https://portswigger.net/burp/dastardly">Dastardly,
+        from Burp Suite</a> via PortSwigger&rsquo;s <a href="https://github.com/PortSwigger/dastardly-github-action">GitHub Action</a>.
+    </p>
+
+    <p>
+        It contains the following vulnerabilities:
+    </p>
+
+    <ul>
+        <li>
+            <a asp-controller="Xss" asp-action="Index">Cross-site scripting (XSS)</a>
+        </li>
+    </ul>
+</section>

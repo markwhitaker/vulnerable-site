@@ -1,0 +1,31 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+h1 {
+  margin: 1em 0;
+}
+
+code {
+  display: inline-block;
+  background-color: #eee;
+  border: 1px solid #ddd;
+  padding: 2px 6px;
+  color: #666;
+  border-radius: 5px;
+}
