@@ -57,3 +57,22 @@ jobs:
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_4080FF02C6844229A0E0EB0ED16426F0 }}
           package: .
+
+  scan-with-dastardly:
+    name: Scan with Dastardly
+    runs-on: ubuntu-latest
+    needs: deploy-to-azure
+
+    steps:
+      - name: Run Dastardly Scan
+        uses: PortSwigger/dastardly-github-action@main
+        with:
+          target-url: 'https://vulnerable-site.azurewebsites.net/'
+
+      - name: Publish Dastardly Scan Report
+        if: always()
+        uses: mikepenz/action-junit-report@v3
+        with:
+          check_name: 'Dastardly Scan Report'
+          report_paths: '**/dastardly-report.xml'
+          require_tests: true
