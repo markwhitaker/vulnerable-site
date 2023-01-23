@@ -1,0 +1,27 @@
+name: Build site, deploy to Azure, scan with Dastardly
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    name: Build and test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '7.0.x'
+          dotnet-quality: 'ga'
+
+      - name: Build with dotnet
+        run: dotnet build -c Release
+
+      - name: Test with dotnet
+        run: dotnet test -c Release
