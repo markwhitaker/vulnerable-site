@@ -1,0 +1,14 @@
+@{
+    ViewData["Title"] = "Cors";
+}
+
+@model XssViewModel
+
+<h1>CORS vulnerable page</h1>
+
+<p>
+    This page is vulnerable to <a href="https://portswigger.net/web-security/cors">cross-origin resource sharing (CORS)</a> attacks.
+</p>
+<p>
+    When this page is requested, the response&rsquo;s <code>Access-Control-Allow-Origin</code> header is set to the value of the request&rsquo;s <code>Origin</code> header.
+</p>
