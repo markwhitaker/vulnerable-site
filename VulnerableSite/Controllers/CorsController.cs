@@ -7,7 +7,7 @@ public class CorsController : Controller
     // GET
     public IActionResult Index()
     {
-        Response.Headers.AccessControlAllowOrigin = Request.Headers.Origin;
+        Response.Headers.AccessControlAllowOrigin = Request.Headers.Origin.Any() ? Request.Headers.Origin : "*";
         return View();
     }
 }
