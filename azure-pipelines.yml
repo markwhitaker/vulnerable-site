@@ -3,18 +3,82 @@
 # Add steps that run tests, create a NuGet package, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
-trigger:
-- main
+name: Build site, deploy to Azure, scan with Dastardly
 
-pool:
-  vmImage: ubuntu-latest
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
 
-variables:
-  buildConfiguration: 'Release'
+jobs:
+  build-and-test:
+    name: Build and test
+    runs-on: ubuntu-latest
 
-steps:
-- script: dotnet build --configuration $(buildConfiguration)
-  displayName: 'dotnet build $(buildConfiguration)'
+    steps:
+      - uses: actions/checkout@v3
 
-- script: dotnet test --configuration $(buildConfiguration)
-  displayName: 'dotnet test $(buildConfiguration)'
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '7.0.x'
+          dotnet-quality: 'ga'
+
+      - name: Build with dotnet
+        run: dotnet build -c Release
+
+      - name: Test with dotnet
+        run: dotnet test -c Release
+
+      - name: dotnet publish
+        run: dotnet publish VulnerableSite -c Release -o ${{env.DOTNET_ROOT}}/myapp
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v3
+        with:
+          name: .net-app
+          path: ${{env.DOTNET_ROOT}}/myapp
+
+  deploy-to-azure:
+    name: Deploy to Azure
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    environment:
+      name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v3
+        with:
+          name: .net-app
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'vulnerable-site'
+          slot-name: 'Production'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_4080FF02C6844229A0E0EB0ED16426F0 }}
+          package: .
+
+  scan-with-dastardly:
+    name: Scan with Dastardly
+    runs-on: ubuntu-latest
+    needs: deploy-to-azure
+
+    steps:
+      - name: Run Dastardly Scan
+        uses: PortSwigger/dastardly-github-action@main
+        with:
+          target-url: 'https://vulnerable-site.azurewebsites.net/'
+
+      - name: Publish Dastardly Scan Report
+        if: always()
+        uses: mikepenz/action-junit-report@v3
+        with:
+          check_name: 'Dastardly Scan Report'
+          report_paths: '**/dastardly-report.xml'
+          require_tests: true
+
