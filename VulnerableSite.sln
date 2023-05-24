@@ -9,7 +9,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution items", "Solution 
 		README.md = README.md
 		.gitignore = .gitignore
 		.github\workflows\build-deploy-and-scan.yml = .github\workflows\build-deploy-and-scan.yml
-		azure-pipelines.yml = azure-pipelines.yml
 	EndProjectSection
 EndProject
 Global
