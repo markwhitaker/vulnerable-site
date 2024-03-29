@@ -4,19 +4,12 @@ using VulnerableSite.Services;
 
 namespace VulnerableSite.Controllers;
 
-public class XssController : Controller
+public class XssController(IXssService xssService) : Controller
 {
-    private readonly IXssService _xssService;
-
-    public XssController(IXssService xssService)
-    {
-        _xssService = xssService;
-    }
-
     // GET
     public IActionResult Index()
     {
-        var model = new XssViewModel(_xssService.Messages);
+        var model = new XssViewModel(xssService.Messages);
 
         return View(model);
     }
@@ -24,7 +17,7 @@ public class XssController : Controller
     [HttpPost]
     public IActionResult Add([FromForm] string message)
     {
-        _xssService.AddMessage(message);
+        xssService.AddMessage(message);
 
         return RedirectToAction("Index");
     }

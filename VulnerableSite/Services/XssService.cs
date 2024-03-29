@@ -2,7 +2,7 @@ namespace VulnerableSite.Services;
 
 public class XssService : IXssService
 {
-    private readonly List<string> _messages = new();
+    private readonly List<string> _messages = [];
 
     public IEnumerable<string> Messages => _messages;
 

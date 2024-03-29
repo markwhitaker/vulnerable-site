@@ -1,11 +1,6 @@
 namespace VulnerableSite.Models;
 
-public class XssViewModel
+public class XssViewModel(IEnumerable<string> messages)
 {
-    public IEnumerable<string> Messages { get; }
-
-    public XssViewModel(IEnumerable<string> messages)
-    {
-        Messages = messages;
-    }
+    public IEnumerable<string> Messages { get; } = messages;
 }
