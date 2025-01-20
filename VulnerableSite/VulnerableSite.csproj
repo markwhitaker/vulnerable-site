@@ -7,8 +7,4 @@
         <LangVersion>default</LangVersion>
     </PropertyGroup>
 
-    <ItemGroup>
-      <_ContentIncludedByDefault Remove="Views\Privacy\Index.cshtml" />
-    </ItemGroup>
-
 </Project>
