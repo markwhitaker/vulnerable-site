@@ -6,7 +6,7 @@ namespace VulnerableSite.Tests.Services;
 [TestFixture]
 public class XssServiceTests
 {
-    private IXssService _service = default!;
+    private IXssService _service = null!;
 
     [SetUp]
     public void SetUp()

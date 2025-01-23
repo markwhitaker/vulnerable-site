@@ -4,10 +4,10 @@ namespace VulnerableSite.Controllers;
 
 public class CorsController : Controller
 {
-    // GET
+    [HttpGet]
     public IActionResult Index()
     {
-        Response.Headers.AccessControlAllowOrigin = Request.Headers.Origin.Any() ? Request.Headers.Origin : "*";
+        Response.Headers.AccessControlAllowOrigin = Request.Headers.Origin.Count != 0 ? Request.Headers.Origin : "*";
         return View();
     }
 }

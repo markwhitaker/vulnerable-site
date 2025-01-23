@@ -6,11 +6,10 @@ namespace VulnerableSite.Controllers;
 
 public class XssController(IXssService xssService) : Controller
 {
-    // GET
+    [HttpGet]
     public IActionResult Index()
     {
         var model = new XssViewModel(xssService.Messages);
-
         return View(model);
     }
 
@@ -18,7 +17,6 @@ public class XssController(IXssService xssService) : Controller
     public IActionResult Add([FromForm] string message)
     {
         xssService.AddMessage(message);
-
         return RedirectToAction("Index");
     }
 }
